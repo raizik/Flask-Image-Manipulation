@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Process your image</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../static/jumbotron-narrow.css" rel="stylesheet">
+
+    <link href="../static/style.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="/">Reset</a>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="jumbotron">
+		 <div id="image-container">
+                         <h4>Original:</h4>
+            <img alt src=" {{url_for('send_image', filename=image_name)}} " >
+            </div>
+
+          </div>
+
+        <div class="row marketing">
+            <div class="col-lg-6">
+                <h4>Flip</h4>
+                <form id="form-flip" action="{{ url_for('flip') }}" method="POST" enctype="multipart/form-data">
+                  <button id="btnFlipV" class="btn btn-lg btn-success" type="submit" name="mode" value="vertical">Vertical</button>
+                  <button id="btnFlipH" class="btn btn-lg btn-success" type="submit" name="mode" value="horizontal">Horizontal</button>
+			  <input aria-label="img" type="text" class="hidden" name="image" value="{{ image_name }}">
+                </form>
+            </div>
+
+            <div class="col-lg-6">
+                <h4>Resize</h4>
+                <form id="form-resize" action="{{ url_for('resize') }}" method="POST" enctype="multipart/form-data">
+                  <label for="resize_method">Choose method:</label>
+                  <select name="resize_method" id="resize_method" onchange="showDiv(this)">
+                     <option value=""></option>
+                    <option value="degrees">Degrees</option>
+                    <option value="pixels">Pixels</option>
+                  </select>
+                  <br><br>
+                  <input type="text" class="hidden" name="image" value="{{ image_name }}">
+                    <div id="degrees" style="display:none;">
+                    <input type="number" name="angle" min="-359" max="359" placeholder="degrees">
+                    <button id="btnResizeP" class="btn btn-lg btn-success" type="submit">Go</button>
+                  </div>
+                  <div id="pixels" style="display:none;">
+                    <input type="number" name="height" min="" max="" placeholder="height">
+                    <input type="number" name="width" min="" max="" placeholder="width">
+                    <button id="btnResize" class="btn btn-lg btn-success" type="submit">Go</button>
+                  </div>
+                    <script>
+                    function showDiv(select) {
+                      if(select.value === 'degrees'){
+                        document.getElementById('degrees').style.display = "block";
+                        document.getElementById('pixels').style.display = "none";
+                       } else{
+                        document.getElementById('pixels').style.display = "block";
+                        document.getElementById('degrees').style.display = "none";
+                       }
+                    }
+                    </script>
+                </form>
+            </div>
+            <div>
+                <h4>Convert</h4>
+                <form id="form-convert" action="{{ url_for('convert') }}" method="POST" enctype="multipart/form-data">
+                    <div>
+                        <button id="btnConvert" class="btn btn-lg btn-success" type="submit">Go</button>
+                    </div>
+                    <input type="text" class="hidden" name="image" value="{{ image_name }}">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
